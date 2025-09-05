@@ -1,11 +1,10 @@
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CompressCraft - Universal File Compressor</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Compressify - Universal File Compressor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
@@ -113,17 +112,314 @@ html
             background-clip: text;
             color: transparent;
         }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: #0f172a;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+                margin-bottom: 1.5rem;
+            }
+            
+            .mobile-logo {
+                display: flex;
+                align-items: center;
+            }
+            
+            .mobile-logo-text {
+                font-size: 1.5rem;
+                font-weight: 700;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+            
+            .mobile-drop-zone {
+                border: 2px dashed rgba(99, 102, 241, 0.5);
+                background: rgba(99, 102, 241, 0.05);
+                border-radius: 12px;
+                padding: 2rem;
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+            
+            .mobile-drop-zone i {
+                font-size: 2.5rem;
+                color: var(--primary);
+                margin-bottom: 0.5rem;
+            }
+            
+            .mobile-drop-zone h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .mobile-drop-zone p {
+                font-size: 0.9rem;
+                color: #94a3b8;
+                margin-bottom: 1rem;
+            }
+            
+            .mobile-btn {
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                font-weight: 600;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                border: none;
+                font-size: 0.9rem;
+            }
+            
+            .mobile-file-item {
+                background: rgba(30, 41, 59, 0.8);
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .mobile-file-info {
+                display: flex;
+                align-items: center;
+            }
+            
+            .mobile-file-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: rgba(99, 102, 241, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 0.75rem;
+            }
+            
+            .mobile-file-details h4 {
+                font-size: 0.9rem;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
+            
+            .mobile-file-details p {
+                font-size: 0.8rem;
+                color: #94a3b8;
+            }
+            
+            .mobile-remove-btn {
+                background: none;
+                border: none;
+                color: #ef4444;
+                font-size: 1.2rem;
+            }
+            
+            .mobile-controls {
+                display: flex;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .mobile-controls button {
+                flex: 1;
+                padding: 0.75rem;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 0.9rem;
+            }
+            
+            .mobile-compress-btn {
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                border: none;
+            }
+            
+            .mobile-clear-btn {
+                background: rgba(30, 41, 59, 0.8);
+                color: #94a3b8;
+                border: 1px solid rgba(148, 163, 184, 0.2);
+            }
+            
+            .mobile-settings {
+                background: rgba(30, 41, 59, 0.8);
+                border-radius: 12px;
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .mobile-settings h3 {
+                font-size: 1rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+            }
+            
+            .mobile-settings h3 i {
+                margin-right: 0.5rem;
+                color: var(--primary);
+            }
+            
+            .mobile-settings select {
+                width: 100%;
+                background: rgba(15, 23, 42, 0.8);
+                border: 1px solid rgba(99, 102, 241, 0.3);
+                color: white;
+                padding: 0.75rem;
+                border-radius: 8px;
+                margin-bottom: 0.75rem;
+                font-size: 0.9rem;
+            }
+            
+            .mobile-settings .checkbox-container {
+                display: flex;
+                align-items: center;
+                margin-top: 0.75rem;
+            }
+            
+            .mobile-settings input[type="checkbox"] {
+                margin-right: 0.5rem;
+            }
+            
+            .mobile-result-card {
+                background: rgba(30, 41, 59, 0.8);
+                border-radius: 12px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .mobile-result-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+            }
+            
+            .mobile-result-title h3 {
+                font-size: 0.9rem;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
+            
+            .mobile-result-title p {
+                font-size: 0.8rem;
+                color: #94a3b8;
+            }
+            
+            .mobile-result-savings {
+                text-align: right;
+            }
+            
+            .mobile-result-savings .percent {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #10b981;
+            }
+            
+            .mobile-result-savings .label {
+                font-size: 0.7rem;
+                color: #10b981;
+            }
+            
+            .mobile-progress {
+                margin-bottom: 1rem;
+            }
+            
+            .mobile-progress-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .mobile-progress-bar {
+                height: 6px;
+                background: #1e293b;
+                border-radius: 3px;
+                overflow: hidden;
+            }
+            
+            .mobile-progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, var(--primary), var(--accent));
+                border-radius: 3px;
+            }
+            
+            .mobile-result-actions {
+                display: flex;
+                justify-content: space-between;
+            }
+            
+            .mobile-result-actions button {
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+            
+            .mobile-preview-btn {
+                background: none;
+                border: 1px solid rgba(99, 102, 241, 0.3);
+                color: var(--primary);
+            }
+            
+            .mobile-download-btn {
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                border: none;
+            }
+            
+            /* Hide desktop elements on mobile */
+            .desktop-only {
+                display: none;
+            }
+        }
+        
+        /* Desktop-specific styles */
+        @media (min-width: 769px) {
+            /* Hide mobile elements on desktop */
+            .mobile-only {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <!-- Header -->
-        <header class="text-center mb-16">
+        <!-- Mobile Header -->
+        <header class="mobile-only mobile-header">
+            <div class="mobile-logo">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-compress text-white text-lg"></i>
+                </div>
+                <div class="mobile-logo-text">Compressify</div>
+            </div>
+            <button class="text-indigo-400">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </header>
+
+        <!-- Desktop Header -->
+        <header class="desktop-only text-center mb-16">
             <div class="flex justify-center items-center mb-4">
                 <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-4 floating">
                     <i class="fas fa-compress text-white text-2xl"></i>
                 </div>
-                <h1 class="text-5xl md:text-6xl font-black glow">CompressCraft</h1>
+                <h1 class="text-5xl md:text-6xl font-black glow">Compressify</h1>
             </div>
             <p class="text-xl text-indigo-300 max-w-2xl mx-auto">
                 Universal file compressor that shrinks images, videos, documents, and more with advanced algorithms
@@ -132,8 +428,19 @@ html
 
         <!-- Main Content -->
         <main>
-            <!-- Compression Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Mobile Drop Zone -->
+            <div class="mobile-only mobile-drop-zone" id="mobileDropZone">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Drop files here to compress</h3>
+                <p>or click to browse files</p>
+                <button class="mobile-btn">
+                    <i class="fas fa-folder-open mr-2"></i> Browse Files
+                </button>
+                <input type="file" id="mobileFileInput" class="hidden" multiple>
+            </div>
+
+            <!-- Desktop Compression Cards -->
+            <div class="desktop-only grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="compressor-card rounded-xl p-6 text-center">
                     <div class="w-16 h-16 rounded-full bg-indigo-900 flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-image text-indigo-400 text-2xl"></i>
@@ -168,8 +475,8 @@ html
                 </div>
             </div>
 
-            <!-- Drop Zone -->
-            <div class="drop-zone rounded-2xl p-12 text-center mb-8" id="dropZone">
+            <!-- Desktop Drop Zone -->
+            <div class="desktop-only drop-zone rounded-2xl p-12 text-center mb-8" id="dropZone">
                 <div class="max-w-md mx-auto">
                     <i class="fas fa-cloud-upload-alt text-6xl text-indigo-400 mb-6 pulse"></i>
                     <h3 class="text-2xl font-bold mb-2">Drop files here to compress</h3>
@@ -181,8 +488,30 @@ html
                 </div>
             </div>
 
-            <!-- Compression Settings -->
-            <div class="compressor-card rounded-xl p-6 mb-8">
+            <!-- Mobile Settings -->
+            <div class="mobile-only mobile-settings">
+                <h3><i class="fas fa-sliders-h"></i> Compression Settings</h3>
+                <select>
+                    <option>Medium (Balanced)</option>
+                    <option>Low (Faster)</option>
+                    <option>High (Smaller)</option>
+                    <option>Ultra (Maximum)</option>
+                </select>
+                <select>
+                    <option>Same as input</option>
+                    <option>JPEG</option>
+                    <option>PNG</option>
+                    <option>WebP</option>
+                    <option>MP4</option>
+                </select>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="mobileMetadata">
+                    <label for="mobileMetadata">Preserve metadata</label>
+                </div>
+            </div>
+
+            <!-- Desktop Settings -->
+            <div class="desktop-only compressor-card rounded-xl p-6 mb-8">
                 <h3 class="text-xl font-bold mb-4 flex items-center">
                     <i class="fas fa-sliders-h mr-2 text-indigo-400"></i>
                     Compression Settings
@@ -217,8 +546,19 @@ html
                 </div>
             </div>
 
-            <!-- File List -->
-            <div class="compressor-card rounded-xl p-6 mb-8">
+            <!-- Mobile File List -->
+            <div class="mobile-only" id="mobileFileList">
+                <h3 class="text-lg font-semibold mb-3">Files to Compress</h3>
+                <div id="mobileFileContainer">
+                    <div class="text-center py-8 text-indigo-300">
+                        <i class="fas fa-inbox text-3xl mb-2"></i>
+                        <p>No files added yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop File List -->
+            <div class="desktop-only compressor-card rounded-xl p-6 mb-8">
                 <h3 class="text-xl font-bold mb-4 flex items-center">
                     <i class="fas fa-file mr-2 text-indigo-400"></i>
                     Files to Compress
@@ -231,8 +571,18 @@ html
                 </div>
             </div>
 
-            <!-- Compression Controls -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <!-- Mobile Controls -->
+            <div class="mobile-only mobile-controls">
+                <button id="mobileCompressBtn" class="mobile-compress-btn">
+                    <i class="fas fa-magic mr-2"></i> Compress
+                </button>
+                <button id="mobileClearBtn" class="mobile-clear-btn">
+                    <i class="fas fa-trash-alt mr-2"></i> Clear
+                </button>
+            </div>
+
+            <!-- Desktop Controls -->
+            <div class="desktop-only flex flex-wrap justify-center gap-4 mb-12">
                 <button id="compressBtn" class="btn-primary text-white font-bold py-3 px-8 rounded-full flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-magic mr-2"></i> Compress All Files
                 </button>
@@ -241,8 +591,16 @@ html
                 </button>
             </div>
 
-            <!-- Results Section -->
-            <div id="resultsSection" class="hidden">
+            <!-- Mobile Results -->
+            <div id="mobileResultsSection" class="mobile-only hidden">
+                <h2 class="text-xl font-bold mb-4">Compression Results</h2>
+                <div id="mobileResultsContainer">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Desktop Results -->
+            <div id="resultsSection" class="desktop-only hidden">
                 <h2 class="text-3xl font-bold text-center mb-8 glow-text">Compression Results</h2>
                 <div id="resultsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Results will be populated here -->
@@ -252,7 +610,7 @@ html
 
         <!-- Footer -->
         <footer class="text-center py-8 border-t border-slate-800 mt-16">
-            <p class="text-indigo-400">© 2023 CompressCraft. All rights reserved.</p>
+            <p class="text-indigo-400">© 2023 Compressify. All rights reserved.</p>
             <div class="flex justify-center space-x-4 mt-4">
                 <a href="#" class="text-indigo-400 hover:text-indigo-300"><i class="fab fa-twitter"></i></a>
                 <a href="#" class="text-indigo-400 hover:text-indigo-300"><i class="fab fa-github"></i></a>
@@ -271,9 +629,18 @@ html
         const resultsSection = document.getElementById('resultsSection');
         const resultsContainer = document.getElementById('resultsContainer');
         
+        // Mobile DOM Elements
+        const mobileDropZone = document.getElementById('mobileDropZone');
+        const mobileFileInput = document.getElementById('mobileFileInput');
+        const mobileFileContainer = document.getElementById('mobileFileContainer');
+        const mobileCompressBtn = document.getElementById('mobileCompressBtn');
+        const mobileClearBtn = document.getElementById('mobileClearBtn');
+        const mobileResultsSection = document.getElementById('mobileResultsSection');
+        const mobileResultsContainer = document.getElementById('mobileResultsContainer');
+        
         let filesToCompress = [];
         
-        // File drop handlers
+        // File drop handlers for desktop
         dropZone.addEventListener('click', () => fileInput.click());
         
         dropZone.addEventListener('dragover', (e) => {
@@ -295,15 +662,23 @@ html
             handleFiles(e.target.files);
         });
         
+        // File drop handlers for mobile
+        mobileDropZone.addEventListener('click', () => mobileFileInput.click());
+        
+        mobileFileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+        
         // Handle files
         function handleFiles(files) {
             for (let i = 0; i < files.length; i++) {
                 filesToCompress.push(files[i]);
             }
             updateFileList();
+            updateMobileFileList();
         }
         
-        // Update file list UI
+        // Update file list UI for desktop
         function updateFileList() {
             if (filesToCompress.length === 0) {
                 fileList.innerHTML = `
@@ -345,6 +720,48 @@ html
             });
         }
         
+        // Update file list UI for mobile
+        function updateMobileFileList() {
+            if (filesToCompress.length === 0) {
+                mobileFileContainer.innerHTML = `
+                    <div class="text-center py-8 text-indigo-300">
+                        <i class="fas fa-inbox text-3xl mb-2"></i>
+                        <p>No files added yet</p>
+                    </div>
+                `;
+                mobileCompressBtn.disabled = true;
+                return;
+            }
+            
+            mobileCompressBtn.disabled = false;
+            mobileFileContainer.innerHTML = '';
+            
+            filesToCompress.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'mobile-file-item';
+                
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                const fileIcon = getFileIcon(file.type);
+                
+                fileItem.innerHTML = `
+                    <div class="mobile-file-info">
+                        <div class="mobile-file-icon">
+                            <i class="${fileIcon} text-indigo-400"></i>
+                        </div>
+                        <div class="mobile-file-details">
+                            <h4>${file.name}</h4>
+                            <p>${fileSize} MB</p>
+                        </div>
+                    </div>
+                    <button class="mobile-remove-btn" onclick="removeFile(${index})">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                `;
+                
+                mobileFileContainer.appendChild(fileItem);
+            });
+        }
+        
         // Get file icon based on type
         function getFileIcon(fileType) {
             if (fileType.startsWith('image/')) return 'fas fa-image';
@@ -360,16 +777,24 @@ html
         function removeFile(index) {
             filesToCompress.splice(index, 1);
             updateFileList();
+            updateMobileFileList();
         }
         
-        // Clear all files
+        // Clear all files for desktop
         clearBtn.addEventListener('click', () => {
             filesToCompress = [];
             updateFileList();
             resultsSection.classList.add('hidden');
         });
         
-        // Simulate compression
+        // Clear all files for mobile
+        mobileClearBtn.addEventListener('click', () => {
+            filesToCompress = [];
+            updateMobileFileList();
+            mobileResultsSection.classList.add('hidden');
+        });
+        
+        // Simulate compression for desktop
         compressBtn.addEventListener('click', () => {
             if (filesToCompress.length === 0) return;
             
@@ -385,7 +810,23 @@ html
             }, 2000);
         });
         
-        // Show compression results
+        // Simulate compression for mobile
+        mobileCompressBtn.addEventListener('click', () => {
+            if (filesToCompress.length === 0) return;
+            
+            // Show loading state
+            mobileCompressBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Compressing...';
+            mobileCompressBtn.disabled = true;
+            
+            // Simulate compression process
+            setTimeout(() => {
+                showMobileResults();
+                mobileCompressBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Compress';
+                mobileCompressBtn.disabled = false;
+            }, 2000);
+        });
+        
+        // Show compression results for desktop
         function showResults() {
             resultsSection.classList.remove('hidden');
             resultsContainer.innerHTML = '';
@@ -434,6 +875,55 @@ html
             });
         }
         
+        // Show compression results for mobile
+        function showMobileResults() {
+            mobileResultsSection.classList.remove('hidden');
+            mobileResultsContainer.innerHTML = '';
+            
+            filesToCompress.forEach(file => {
+                const originalSize = file.size;
+                const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5)); // 30-80% of original
+                const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
+                
+                const resultCard = document.createElement('div');
+                resultCard.className = 'mobile-result-card';
+                
+                resultCard.innerHTML = `
+                    <div class="mobile-result-header">
+                        <div class="mobile-result-title">
+                            <h3>${file.name}</h3>
+                            <p>${file.type}</p>
+                        </div>
+                        <div class="mobile-result-savings">
+                            <div class="percent">${savings}%</div>
+                            <div class="label">saved</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mobile-progress">
+                        <div class="mobile-progress-info">
+                            <span>Original: ${formatFileSize(originalSize)}</span>
+                            <span>Compressed: ${formatFileSize(compressedSize)}</span>
+                        </div>
+                        <div class="mobile-progress-bar">
+                            <div class="mobile-progress-fill" style="width: ${savings}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mobile-result-actions">
+                        <button class="mobile-preview-btn">
+                            <i class="fas fa-eye mr-1"></i> Preview
+                        </button>
+                        <button class="mobile-download-btn">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </button>
+                    </div>
+                `;
+                
+                mobileResultsContainer.appendChild(resultCard);
+            });
+        }
+        
         // Format file size
         function formatFileSize(bytes) {
             if (bytes < 1024) return bytes + ' B';
@@ -443,3 +933,4 @@ html
     </script>
 </body>
 </html>
+       
