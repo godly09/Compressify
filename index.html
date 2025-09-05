@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -221,7 +220,7 @@ html
                         <i class="fas fa-cloud-upload-alt text-6xl text-indigo-400 mb-6 pulse"></i>
                         <h3 class="text-2xl font-bold mb-2">Drop files here to compress</h3>
                         <p class="text-indigo-300 mb-6">or click to browse files</p>
-                        <button class="btn-primary text-white font-bold py-3 px-8 rounded-full">
+                        <button class="btn-primary text-white font-bold py-3 px-8 rounded-full" id="browseBtn">
                             <i class="fas fa-folder-open mr-2"></i> Browse Files
                         </button>
                         <input type="file" id="fileInput" class="hidden" multiple>
@@ -237,7 +236,7 @@ html
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-sm font-medium mb-2">Compression Level</label>
-                            <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="compressionLevel">
                                 <option>Low (Faster)</option>
                                 <option selected>Medium (Balanced)</option>
                                 <option>High (Smaller)</option>
@@ -246,7 +245,7 @@ html
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-2">Output Format</label>
-                            <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="outputFormat">
                                 <option>Same as input</option>
                                 <option>JPEG</option>
                                 <option>PNG</option>
@@ -338,7 +337,7 @@ html
                     <i class="fas fa-sliders-h mr-2 text-indigo-400"></i>
                     Settings
                 </h3>
-                <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 mb-3 focus:outline-none">
+                <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 mb-3 focus:outline-none" id="mobileCompressionLevel">
                     <option>Medium Compression</option>
                     <option>Low Compression</option>
                     <option>High Compression</option>
@@ -385,180 +384,115 @@ html
     </div>
 
     <script>
-        // Device detection
+        // Improved device detection
         function isMobileDevice() {
-            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+            return window.innerWidth <= 768 || 
+                   (typeof window.orientation !== "undefined") || 
+                   (navigator.userAgent.indexOf('IEMobile') !== -1) ||
+                   (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
         }
         
         // Initialize based on device
-        if (isMobileDevice()) {
-            document.body.classList.add('mobile-device');
-            
-            // Mobile-specific JavaScript
-            const mobileFileBtn = document.getElementById('mobileFileBtn');
-            const mobileFileInput = document.getElementById('mobileFileInput');
-            const mobileFileList = document.getElementById('mobileFileList');
-            const mobileCompressBtn = document.getElementById('mobileCompressBtn');
-            const mobileClearBtn = document.getElementById('mobileClearBtn');
-            const mobileResultsSection = document.getElementById('mobileResultsSection');
-            const mobileResultsContainer = document.getElementById('mobileResultsContainer');
-            
-            let mobileFilesToCompress = [];
-            
-            // File selection handler
-            mobileFileBtn.addEventListener('click', () => mobileFileInput.click());
-            
-            mobileFileInput.addEventListener('change', (e) => {
-                handleMobileFiles(e.target.files);
-            });
-            
-            // Handle files for mobile
-            function handleMobileFiles(files) {
-                for (let i = 0; i < files.length; i++) {
-                    mobileFilesToCompress.push(files[i]);
-                }
-                updateMobileFileList();
+        document.addEventListener('DOMContentLoaded', function() {
+            if (isMobileDevice()) {
+                document.body.classList.add('mobile-device');
+                initializeMobileApp();
+            } else {
+                initializeDesktopApp();
             }
-            
-            // Update mobile file list UI
-            function updateMobileFileList() {
-                if (mobileFilesToCompress.length === 0) {
-                    mobileFileList.innerHTML = `
-                        <div class="text-center py-6 text-indigo-300">
-                            <i class="fas fa-inbox text-3xl mb-2"></i>
-                            <p>No files selected</p>
-                        </div>
-                    `;
-                    mobileCompressBtn.disabled = true;
-                    return;
-                }
+        });
+        
+        // Shared functions
+        function getFileIcon(fileType) {
+            if (fileType.startsWith('image/')) return 'fas fa-image';
+            if (fileType.startsWith('video/')) return 'fas fa-video';
+            if (fileType.includes('pdf')) return 'fas fa-file-pdf';
+            if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
+            if (fileType.includes('presentation') || fileType.includes('slideshow')) return 'fas fa-file-powerpoint';
+            if (fileType.includes('zip') || fileType.includes('rar')) return 'fas fa-file-archive';
+            return 'fas fa-file';
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            else return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+        
+        function handleDownload(event) {
+            try {
+                const button = event.currentTarget;
+                const filename = button.getAttribute('data-filename');
+                const index = parseInt(button.getAttribute('data-index'));
                 
-                mobileCompressBtn.disabled = false;
-                mobileFileList.innerHTML = '';
+                // Create a dummy blob for demonstration
+                const content = `Compressed version of ${filename}\nOriginal file processed by CompressCraft`;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
                 
-                mobileFilesToCompress.forEach((file, index) => {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item rounded-lg p-3 flex items-center justify-between mb-2';
-                    
-                    const fileSize = (file.size / 1024 / 1024).toFixed(2);
-                    const fileIcon = getFileIcon(file.type);
-                    
-                    fileItem.innerHTML = `
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-lg bg-indigo-900 flex items-center justify-center mr-3">
-                                <i class="${fileIcon} text-indigo-400"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-sm">${file.name}</h4>
-                                <p class="text-xs text-indigo-300">${fileSize} MB</p>
-                            </div>
-                        </div>
-                        <button class="text-pink-500" onclick="removeMobileFile(${index})">
-                            <i class="fas fa-times-circle"></i>
-                        </button>
-                    `;
-                    
-                    mobileFileList.appendChild(fileItem);
-                });
-            }
-            
-            // Get file icon based on type
-            function getFileIcon(fileType) {
-                if (fileType.startsWith('image/')) return 'fas fa-image';
-                if (fileType.startsWith('video/')) return 'fas fa-video';
-                if (fileType.includes('pdf')) return 'fas fa-file-pdf';
-                if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
-                if (fileType.includes('presentation') || fileType.includes('slideshow')) return 'fas fa-file-powerpoint';
-                if (fileType.includes('zip') || fileType.includes('rar')) return 'fas fa-file-archive';
-                return 'fas fa-file';
-            }
-            
-            // Remove file from mobile list
-            window.removeMobileFile = function(index) {
-                mobileFilesToCompress.splice(index, 1);
-                updateMobileFileList();
-            }
-            
-            // Clear all mobile files
-            mobileClearBtn.addEventListener('click', () => {
-                mobileFilesToCompress = [];
-                updateMobileFileList();
-                mobileResultsSection.classList.add('hidden');
-            });
-            
-            // Simulate compression for mobile
-            mobileCompressBtn.addEventListener('click', () => {
-                if (mobileFilesToCompress.length === 0) return;
+                // Create a temporary download link
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `compressed_${filename}`;
+                document.body.appendChild(a);
+                a.click();
                 
-                // Show loading state
-                mobileCompressBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Compressing...';
-                mobileCompressBtn.disabled = true;
-                
-                // Simulate compression process
+                // Clean up
                 setTimeout(() => {
-                    showMobileResults();
-                    mobileCompressBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Compress Files';
-                    mobileCompressBtn.disabled = false;
-                }, 2000);
-            });
-            
-            // Show mobile compression results
-            function showMobileResults() {
-                mobileResultsSection.classList.remove('hidden');
-                mobileResultsContainer.innerHTML = '';
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
                 
-                mobileFilesToCompress.forEach((file, index) => {
-                    const originalSize = file.size;
-                    const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5));
-                    const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
-                    
-                    const resultCard = document.createElement('div');
-                    resultCard.className = 'mobile-card';
-                    
-                    resultCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="font-bold">${file.name}</h3>
-                                <p class="text-xs text-indigo-300">${file.type}</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-lg font-bold text-green-400">${savings}%</div>
-                                <div class="text-xs text-green-300">saved</div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="flex justify-between text-xs mb-1">
-                                <span>Original: ${formatFileSize(originalSize)}</span>
-                                <span>Compressed: ${formatFileSize(compressedSize)}</span>
-                            </div>
-                            <div class="w-full bg-slate-700 rounded-full h-2">
-                                <div class="progress-bar" style="width: ${savings}%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <button class="text-indigo-400 text-sm flex items-center">
-                                <i class="fas fa-eye mr-1"></i> Preview
-                            </button>
-                            <button class="download-btn bg-indigo-600 text-white font-bold py-1 px-3 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
-                                <i class="fas fa-download mr-1"></i> Download
-                            </button>
-                        </div>
-                    `;
-                    
-                    mobileResultsContainer.appendChild(resultCard);
-                });
-                
-                // Add event listeners to download buttons
-                document.querySelectorAll('.download-btn').forEach(button => {
-                    button.addEventListener('click', handleDownload);
-                });
+                // Show success message
+                showNotification(`Download started for ${filename}`, 'success');
+            } catch (error) {
+                console.error('Download error:', error);
+                showNotification('Download failed. Please try again.', 'error');
             }
-            
-        } else {
-            // Desktop JavaScript (original)
+        }
+        
+        function showNotification(message, type = 'info') {
+            try {
+                // Remove any existing notifications
+                const existingNotifications = document.querySelectorAll('.notification');
+                existingNotifications.forEach(notif => {
+                    if (notif.parentNode) {
+                        notif.parentNode.removeChild(notif);
+                    }
+                });
+                
+                const notification = document.createElement('div');
+                notification.className = `notification fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                    type === 'success' ? 'bg-green-600' : 
+                    type === 'error' ? 'bg-red-600' : 'bg-indigo-600'
+                } text-white`;
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 500);
+                }, 3000);
+            } catch (error) {
+                console.error('Notification error:', error);
+            }
+        }
+        
+        // Desktop App Initialization
+        function initializeDesktopApp() {
             const dropZone = document.getElementById('dropZone');
+            const browseBtn = document.getElementById('browseBtn');
             const fileInput = document.getElementById('fileInput');
             const fileList = document.getElementById('fileList');
             const compressBtn = document.getElementById('compressBtn');
@@ -569,7 +503,7 @@ html
             let filesToCompress = [];
             
             // File drop handlers
-            dropZone.addEventListener('click', () => fileInput.click());
+            browseBtn.addEventListener('click', () => fileInput.click());
             
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -592,207 +526,371 @@ html
             
             // Handle files
             function handleFiles(files) {
-                for (let i = 0; i < files.length; i++) {
-                    filesToCompress.push(files[i]);
+                try {
+                    if (!files || files.length === 0) return;
+                    
+                    for (let i = 0; i < files.length; i++) {
+                        filesToCompress.push(files[i]);
+                    }
+                    updateFileList();
+                    showNotification(`${files.length} file(s) added successfully`, 'success');
+                } catch (error) {
+                    console.error('File handling error:', error);
+                    showNotification('Error adding files. Please try again.', 'error');
                 }
-                updateFileList();
             }
             
             // Update file list UI
             function updateFileList() {
-                if (filesToCompress.length === 0) {
-                    fileList.innerHTML = `
-                        <div class="text-center py-8 text-indigo-300">
-                            <i class="fas fa-inbox text-4xl mb-2"></i>
-                            <p>No files added yet</p>
-                        </div>
-                    `;
-                    compressBtn.disabled = true;
-                    return;
+                try {
+                    if (filesToCompress.length === 0) {
+                        fileList.innerHTML = `
+                            <div class="text-center py-8 text-indigo-300">
+                                <i class="fas fa-inbox text-4xl mb-2"></i>
+                                <p>No files added yet</p>
+                            </div>
+                        `;
+                        compressBtn.disabled = true;
+                        return;
+                    }
+                    
+                    compressBtn.disabled = false;
+                    fileList.innerHTML = '';
+                    
+                    filesToCompress.forEach((file, index) => {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'file-item rounded-lg p-4 flex items-center justify-between';
+                        
+                        const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                        const fileIcon = getFileIcon(file.type);
+                        
+                        fileItem.innerHTML = `
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-lg bg-indigo-900 flex items-center justify-center mr-4">
+                                    <i class="${fileIcon} text-indigo-400 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">${file.name}</h4>
+                                    <p class="text-sm text-indigo-300">${fileSize} MB</p>
+                                </div>
+                            </div>
+                            <button class="text-pink-500 hover:text-pink-400" onclick="removeFile(${index})">
+                                <i class="fas fa-times-circle text-xl"></i>
+                            </button>
+                        `;
+                        
+                        fileList.appendChild(fileItem);
+                    });
+                } catch (error) {
+                    console.error('Update file list error:', error);
+                    showNotification('Error updating file list.', 'error');
                 }
-                
-                compressBtn.disabled = false;
-                fileList.innerHTML = '';
-                
-                filesToCompress.forEach((file, index) => {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item rounded-lg p-4 flex items-center justify-between';
-                    
-                    const fileSize = (file.size / 1024 / 1024).toFixed(2);
-                    const fileIcon = getFileIcon(file.type);
-                    
-                    fileItem.innerHTML = `
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-lg bg-indigo-900 flex items-center justify-center mr-4">
-                                <i class="${fileIcon} text-indigo-400 text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium">${file.name}</h4>
-                                <p class="text-sm text-indigo-300">${fileSize} MB</p>
-                            </div>
-                        </div>
-                        <button class="text-pink-500 hover:text-pink-400" onclick="removeFile(${index})">
-                            <i class="fas fa-times-circle text-xl"></i>
-                        </button>
-                    `;
-                    
-                    fileList.appendChild(fileItem);
-                });
-            }
-            
-            // Get file icon based on type
-            function getFileIcon(fileType) {
-                if (fileType.startsWith('image/')) return 'fas fa-image';
-                if (fileType.startsWith('video/')) return 'fas fa-video';
-                if (fileType.includes('pdf')) return 'fas fa-file-pdf';
-                if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
-                if (fileType.includes('presentation') || fileType.includes('slideshow')) return 'fas fa-file-powerpoint';
-                if (fileType.includes('zip') || fileType.includes('rar')) return 'fas fa-file-archive';
-                return 'fas fa-file';
             }
             
             // Remove file from list
             window.removeFile = function(index) {
-                filesToCompress.splice(index, 1);
-                updateFileList();
+                try {
+                    filesToCompress.splice(index, 1);
+                    updateFileList();
+                    showNotification('File removed', 'info');
+                } catch (error) {
+                    console.error('Remove file error:', error);
+                    showNotification('Error removing file.', 'error');
+                }
             }
             
             // Clear all files
             clearBtn.addEventListener('click', () => {
-                filesToCompress = [];
-                updateFileList();
-                resultsSection.classList.add('hidden');
+                try {
+                    filesToCompress = [];
+                    updateFileList();
+                    resultsSection.classList.add('hidden');
+                    showNotification('All files cleared', 'info');
+                } catch (error) {
+                    console.error('Clear files error:', error);
+                    showNotification('Error clearing files.', 'error');
+                }
             });
             
             // Simulate compression
             compressBtn.addEventListener('click', () => {
-                if (filesToCompress.length === 0) return;
-                
-                // Show loading state
-                compressBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Compressing...';
-                compressBtn.disabled = true;
-                
-                // Simulate compression process
-                setTimeout(() => {
-                    showResults();
+                try {
+                    if (filesToCompress.length === 0) {
+                        showNotification('Please add files to compress', 'error');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    compressBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Compressing...';
+                    compressBtn.disabled = true;
+                    
+                    // Simulate compression process
+                    setTimeout(() => {
+                        showResults();
+                        compressBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Compress All Files';
+                        compressBtn.disabled = false;
+                        showNotification('Compression completed successfully!', 'success');
+                    }, 2000);
+                } catch (error) {
+                    console.error('Compression error:', error);
                     compressBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Compress All Files';
                     compressBtn.disabled = false;
-                }, 2000);
+                    showNotification('Compression failed. Please try again.', 'error');
+                }
             });
             
             // Show compression results
             function showResults() {
-                resultsSection.classList.remove('hidden');
-                resultsContainer.innerHTML = '';
-                
-                filesToCompress.forEach((file, index) => {
-                    const originalSize = file.size;
-                    const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5));
-                    const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
+                try {
+                    resultsSection.classList.remove('hidden');
+                    resultsContainer.innerHTML = '';
                     
-                    const resultCard = document.createElement('div');
-                    resultCard.className = 'compressor-card rounded-xl p-6';
-                    
-                    resultCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="font-bold text-lg">${file.name}</h3>
-                                <p class="text-sm text-indigo-300">${file.type}</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-xl font-bold text-green-400">${savings}%</div>
-                                <div class="text-xs text-green-300">saved</div>
-                            </div>
-                        </div>
+                    filesToCompress.forEach((file, index) => {
+                        const originalSize = file.size;
+                        const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5));
+                        const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
                         
-                        <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-1">
-                                <span>Original: ${formatFileSize(originalSize)}</span>
-                                <span>Compressed: ${formatFileSize(compressedSize)}</span>
-                            </div>
-                            <div class="w-full bg-slate-700 rounded-full h-2.5">
-                                <div class="progress-bar" style="width: ${savings}%"></div>
-                            </div>
-                        </div>
+                        const resultCard = document.createElement('div');
+                        resultCard.className = 'compressor-card rounded-xl p-6';
                         
-                        <div class="flex justify-between">
-                            <button class="text-indigo-400 hover:text-indigo-300 flex items-center">
-                                <i class="fas fa-eye mr-1"></i> Preview
-                            </button>
-                            <button class="download-btn btn-primary text-white font-bold py-2 px-4 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
-                                <i class="fas fa-download mr-1"></i> Download
-                            </button>
-                        </div>
-                    `;
+                        resultCard.innerHTML = `
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-bold text-lg">${file.name}</h3>
+                                    <p class="text-sm text-indigo-300">${file.type}</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-green-400">${savings}%</div>
+                                    <div class="text-xs text-green-300">saved</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Original: ${formatFileSize(originalSize)}</span>
+                                    <span>Compressed: ${formatFileSize(compressedSize)}</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2.5">
+                                    <div class="progress-bar" style="width: ${savings}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <button class="text-indigo-400 hover:text-indigo-300 flex items-center">
+                                    <i class="fas fa-eye mr-1"></i> Preview
+                                </button>
+                                <button class="download-btn btn-primary text-white font-bold py-2 px-4 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
+                                    <i class="fas fa-download mr-1"></i> Download
+                                </button>
+                            </div>
+                        `;
+                        
+                        resultsContainer.appendChild(resultCard);
+                    });
                     
-                    resultsContainer.appendChild(resultCard);
-                });
-                
-                // Add event listeners to download buttons
-                document.querySelectorAll('.download-btn').forEach(button => {
-                    button.addEventListener('click', handleDownload);
-                });
+                    // Add event listeners to download buttons
+                    document.querySelectorAll('.download-btn').forEach(button => {
+                        button.addEventListener('click', handleDownload);
+                    });
+                } catch (error) {
+                    console.error('Show results error:', error);
+                    showNotification('Error displaying results.', 'error');
+                }
             }
         }
         
-        // Format file size (shared function)
-        function formatFileSize(bytes) {
-            if (bytes < 1024) return bytes + ' B';
-            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-            else return (bytes / 1048576).toFixed(1) + ' MB';
-        }
-        
-        // Handle download for both desktop and mobile
-        function handleDownload(event) {
-            const button = event.currentTarget;
-            const filename = button.getAttribute('data-filename');
-            const index = parseInt(button.getAttribute('data-index'));
+        // Mobile App Initialization
+        function initializeMobileApp() {
+            const mobileFileBtn = document.getElementById('mobileFileBtn');
+            const mobileFileInput = document.getElementById('mobileFileInput');
+            const mobileFileList = document.getElementById('mobileFileList');
+            const mobileCompressBtn = document.getElementById('mobileCompressBtn');
+            const mobileClearBtn = document.getElementById('mobileClearBtn');
+            const mobileResultsSection = document.getElementById('mobileResultsSection');
+            const mobileResultsContainer = document.getElementById('mobileResultsContainer');
             
-            // Create a dummy blob for demonstration
-            const content = `Compressed version of ${filename}\nOriginal file processed by CompressCraft`;
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
+            let mobileFilesToCompress = [];
             
-            // Create a temporary download link
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `compressed_${filename}`;
-            document.body.appendChild(a);
-            a.click();
+            // File selection handler
+            mobileFileBtn.addEventListener('click', () => mobileFileInput.click());
             
-            // Clean up
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
+            mobileFileInput.addEventListener('change', (e) => {
+                handleMobileFiles(e.target.files);
+            });
             
-            // Show success message
-            showNotification(`Download started for ${filename}`, 'success');
-        }
-        
-        // Show notification
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
-                type === 'success' ? 'bg-green-600' : 
-                type === 'error' ? 'bg-red-600' : 'bg-indigo-600'
-            } text-white`;
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-2"></i>
-                    <span>${message}</span>
-                </div>
-            `;
+            // Handle files for mobile
+            function handleMobileFiles(files) {
+                try {
+                    if (!files || files.length === 0) return;
+                    
+                    for (let i = 0; i < files.length; i++) {
+                        mobileFilesToCompress.push(files[i]);
+                    }
+                    updateMobileFileList();
+                    showNotification(`${files.length} file(s) added successfully`, 'success');
+                } catch (error) {
+                    console.error('Mobile file handling error:', error);
+                    showNotification('Error adding files. Please try again.', 'error');
+                }
+            }
             
-            document.body.appendChild(notification);
+            // Update mobile file list UI
+            function updateMobileFileList() {
+                try {
+                    if (mobileFilesToCompress.length === 0) {
+                        mobileFileList.innerHTML = `
+                            <div class="text-center py-6 text-indigo-300">
+                                <i class="fas fa-inbox text-3xl mb-2"></i>
+                                <p>No files selected</p>
+                            </div>
+                        `;
+                        mobileCompressBtn.disabled = true;
+                        return;
+                    }
+                    
+                    mobileCompressBtn.disabled = false;
+                    mobileFileList.innerHTML = '';
+                    
+                    mobileFilesToCompress.forEach((file, index) => {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'file-item rounded-lg p-3 flex items-center justify-between mb-2';
+                        
+                        const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                        const fileIcon = getFileIcon(file.type);
+                        
+                        fileItem.innerHTML = `
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-lg bg-indigo-900 flex items-center justify-center mr-3">
+                                    <i class="${fileIcon} text-indigo-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-sm">${file.name}</h4>
+                                    <p class="text-xs text-indigo-300">${fileSize} MB</p>
+                                </div>
+                            </div>
+                            <button class="text-pink-500" onclick="removeMobileFile(${index})">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        `;
+                        
+                        mobileFileList.appendChild(fileItem);
+                    });
+                } catch (error) {
+                    console.error('Update mobile file list error:', error);
+                    showNotification('Error updating file list.', 'error');
+                }
+            }
             
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 500);
-            }, 3000);
+            // Remove file from mobile list
+            window.removeMobileFile = function(index) {
+                try {
+                    mobileFilesToCompress.splice(index, 1);
+                    updateMobileFileList();
+                    showNotification('File removed', 'info');
+                } catch (error) {
+                    console.error('Remove mobile file error:', error);
+                    showNotification('Error removing file.', 'error');
+                }
+            }
+            
+            // Clear all mobile files
+            mobileClearBtn.addEventListener('click', () => {
+                try {
+                    mobileFilesToCompress = [];
+                    updateMobileFileList();
+                    mobileResultsSection.classList.add('hidden');
+                    showNotification('All files cleared', 'info');
+                } catch (error) {
+                    console.error('Clear mobile files error:', error);
+                    showNotification('Error clearing files.', 'error');
+                }
+            });
+            
+            // Simulate compression for mobile
+            mobileCompressBtn.addEventListener('click', () => {
+                try {
+                    if (mobileFilesToCompress.length === 0) {
+                        showNotification('Please add files to compress', 'error');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    mobileCompressBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Compressing...';
+                    mobileCompressBtn.disabled = true;
+                    
+                    // Simulate compression process
+                    setTimeout(() => {
+                        showMobileResults();
+                        mobileCompressBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Compress Files';
+                        mobileCompressBtn.disabled = false;
+                        showNotification('Compression completed successfully!', 'success');
+                    }, 2000);
+                } catch (error) {
+                    console.error('Mobile compression error:', error);
+                    mobileCompressBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Compress Files';
+                    mobileCompressBtn.disabled = false;
+                    showNotification('Compression failed. Please try again.', 'error');
+                }
+            });
+            
+            // Show mobile compression results
+            function showMobileResults() {
+                try {
+                    mobileResultsSection.classList.remove('hidden');
+                    mobileResultsContainer.innerHTML = '';
+                    
+                    mobileFilesToCompress.forEach((file, index) => {
+                        const originalSize = file.size;
+                        const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5));
+                        const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
+                        
+                        const resultCard = document.createElement('div');
+                        resultCard.className = 'mobile-card';
+                        
+                        resultCard.innerHTML = `
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="font-bold">${file.name}</h3>
+                                    <p class="text-xs text-indigo-300">${file.type}</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-green-400">${savings}%</div>
+                                    <div class="text-xs text-green-300">saved</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Original: ${formatFileSize(originalSize)}</span>
+                                    <span>Compressed: ${formatFileSize(compressedSize)}</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: ${savings}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <button class="text-indigo-400 text-sm flex items-center">
+                                    <i class="fas fa-eye mr-1"></i> Preview
+                                </button>
+                                <button class="download-btn bg-indigo-600 text-white font-bold py-1 px-3 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
+                                    <i class="fas fa-download mr-1"></i> Download
+                                </button>
+                            </div>
+                        `;
+                        
+                        mobileResultsContainer.appendChild(resultCard);
+                    });
+                    
+                    // Add event listeners to download buttons
+                    document.querySelectorAll('.download-btn').forEach(button => {
+                        button.addEventListener('click', handleDownload);
+                    });
+                } catch (error) {
+                    console.error('Show mobile results error:', error);
+                    showNotification('Error displaying results.', 'error');
+                }
+            }
         }
     </script>
 </body>
