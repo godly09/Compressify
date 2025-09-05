@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -506,7 +507,7 @@
                 mobileResultsSection.classList.remove('hidden');
                 mobileResultsContainer.innerHTML = '';
                 
-                mobileFilesToCompress.forEach(file => {
+                mobileFilesToCompress.forEach((file, index) => {
                     const originalSize = file.size;
                     const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5));
                     const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
@@ -540,13 +541,18 @@
                             <button class="text-indigo-400 text-sm flex items-center">
                                 <i class="fas fa-eye mr-1"></i> Preview
                             </button>
-                            <button class="bg-indigo-600 text-white font-bold py-1 px-3 rounded-full text-sm">
+                            <button class="download-btn bg-indigo-600 text-white font-bold py-1 px-3 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
                                 <i class="fas fa-download mr-1"></i> Download
                             </button>
                         </div>
                     `;
                     
                     mobileResultsContainer.appendChild(resultCard);
+                });
+                
+                // Add event listeners to download buttons
+                document.querySelectorAll('.download-btn').forEach(button => {
+                    button.addEventListener('click', handleDownload);
                 });
             }
             
@@ -679,7 +685,7 @@
                 resultsSection.classList.remove('hidden');
                 resultsContainer.innerHTML = '';
                 
-                filesToCompress.forEach(file => {
+                filesToCompress.forEach((file, index) => {
                     const originalSize = file.size;
                     const compressedSize = Math.floor(originalSize * (0.3 + Math.random() * 0.5));
                     const savings = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
@@ -713,13 +719,18 @@
                             <button class="text-indigo-400 hover:text-indigo-300 flex items-center">
                                 <i class="fas fa-eye mr-1"></i> Preview
                             </button>
-                            <button class="btn-primary text-white font-bold py-2 px-4 rounded-full text-sm">
+                            <button class="download-btn btn-primary text-white font-bold py-2 px-4 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
                                 <i class="fas fa-download mr-1"></i> Download
                             </button>
                         </div>
                     `;
                     
                     resultsContainer.appendChild(resultCard);
+                });
+                
+                // Add event listeners to download buttons
+                document.querySelectorAll('.download-btn').forEach(button => {
+                    button.addEventListener('click', handleDownload);
                 });
             }
         }
@@ -729,6 +740,59 @@
             if (bytes < 1024) return bytes + ' B';
             else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
             else return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+        
+        // Handle download for both desktop and mobile
+        function handleDownload(event) {
+            const button = event.currentTarget;
+            const filename = button.getAttribute('data-filename');
+            const index = parseInt(button.getAttribute('data-index'));
+            
+            // Create a dummy blob for demonstration
+            const content = `Compressed version of ${filename}\nOriginal file processed by CompressCraft`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            // Create a temporary download link
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `compressed_${filename}`;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            // Show success message
+            showNotification(`Download started for ${filename}`, 'success');
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-600' : 
+                type === 'error' ? 'bg-red-600' : 'bg-indigo-600'
+            } text-white`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
         }
     </script>
 </body>
