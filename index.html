@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type='text/javascript' src='//pl27585608.revenuecpmgate.com/09/38/e4/0938e42c65df43f13cef4d8cc45279ed.js'></script>
     <meta charset="UTF-8">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4962523918945226"
-     crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CompressCraft - Universal File Compressor</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -116,6 +113,33 @@
             color: transparent;
         }
         
+        /* Ad container styling */
+        .ad-container {
+            margin: 20px auto;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(30, 41, 59, 0.3);
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .ad-container iframe, .ad-container ins {
+            width: 100% !important;
+            max-width: 728px;
+            margin: 0 auto;
+        }
+        
+        .ad-placeholder {
+            color: #6366f1;
+            padding: 20px;
+            text-align: center;
+            font-style: italic;
+        }
+        
         /* Mobile-specific styles */
         .mobile-only {
             display: none;
@@ -159,6 +183,24 @@
                 max-height: 300px;
                 overflow-y: auto;
             }
+            
+            /* Mobile ad styling */
+            .mobile-ad {
+                margin: 15px 0;
+                text-align: center;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(30, 41, 59, 0.3);
+                border-radius: 8px;
+                padding: 10px;
+            }
+            
+            .mobile-ad iframe, .mobile-ad ins {
+                width: 100% !important;
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
@@ -167,7 +209,7 @@
     <div class="desktop-only">
         <div class="container mx-auto px-4 py-8 max-w-6xl">
             <!-- Header -->
-            <header class="text-center mb-16">
+            <header class="text-center mb-8">
                 <div class="flex justify-center items-center mb-4">
                     <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-4 floating">
                         <i class="fas fa-compress text-white text-2xl"></i>
@@ -178,6 +220,12 @@
                     Universal file compressor that shrinks images, videos, documents, and more with advanced algorithms
                 </p>
             </header>
+
+            <!-- Ad Placement -->
+            <div class="ad-container">
+                <script async="async" data-cfasync="false" src="//pl27590979.revenuecpmgate.com/bfd5fa3a197ae40634d0748b771b06f0/invoke.js"></script>
+                <div id="container-bfd5fa3a197ae40634d0748b771b06f0"></div>
+            </div>
 
             <!-- Main Content -->
             <main>
@@ -325,6 +373,12 @@
             </p>
         </header>
 
+        <!-- Mobile Ad Placement -->
+        <div class="mobile-ad">
+            <script async="async" data-cfasync="false" src="//pl27590979.revenuecpmgate.com/bfd5fa3a197ae40634d0748b771b06f0/invoke.js"></script>
+            <div id="container-bfd5fa3a197ae40634d0748b771b06f0"></div>
+        </div>
+
         <div class="mobile-card">
             <h3 class="text-lg font-bold mb-4 flex items-center">
                 <i class="fas fa-cloud-upload-alt mr-2 text-indigo-400"></i>
@@ -403,7 +457,44 @@
             } else {
                 initializeDesktopApp();
             }
+            
+            // Check if ads are loading properly
+            checkAdLoading();
         });
+        
+        // Function to check if ads are loading
+        function checkAdLoading() {
+            setTimeout(function() {
+                const adContainers = document.querySelectorAll('#container-bfd5fa3a197ae40634d0748b771b06f0');
+                let adsLoaded = false;
+                
+                adContainers.forEach(container => {
+                    if (container.children.length > 0) {
+                        adsLoaded = true;
+                    }
+                });
+                
+                if (!adsLoaded) {
+                    console.log('Ads not loading, showing placeholder');
+                    showAdPlaceholders();
+                }
+            }, 3000);
+        }
+        
+        // Show placeholder if ads don't load
+        function showAdPlaceholders() {
+            const adContainers = document.querySelectorAll('#container-bfd5fa3a197ae40634d0748b771b06f0');
+            
+            adContainers.forEach(container => {
+                if (container.children.length === 0) {
+                    container.innerHTML = '<div class="ad-placeholder">Advertisement<br><small>Ad content will appear here when available</small></div>';
+                    container.style.minHeight = '90px';
+                    container.style.display = 'flex';
+                    container.style.alignItems = 'center';
+                    container.style.justifyContent = 'center';
+                }
+            });
+        }
         
         // Shared functions
         function getFileIcon(fileType) {
