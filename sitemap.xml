@@ -1,9 +1,15 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<div id="in-page-channel-node-id" data-channel-name="in_page_channel_RAkT1X"/>
-<script/>
-<!--  created with Free Online Sitemap Generator www.xml-sitemaps.com  -->
+<?xml version="1.0" encoding="UTF-8"?> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
 <url>
-<loc>https://compresscraft.fun/</loc>
-<lastmod>2025-09-11T11:46:16+00:00</lastmod>
+  <loc>https://compresscraft.fun/</loc>
+</url>
+<url>
+  <loc>http://compresscraft.fun/compress-pdf-under-100kb</loc>
+</url>
+<url>
+  <loc>http://compresscraft.fun/merge-and-compress-pdf</loc>
+</url>
+<url>
+  <loc>http://compresscraft.fun/</loc>
 </url>
 </urlset>
