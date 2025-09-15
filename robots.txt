@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://compresscraft.fun/sitemap.xml
+
+# Allow search engines to crawl CSS and JS for proper rendering
+Allow: /*.css$
+Allow: /*.js$
+
+# Directives for image search
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+
+# Directives for ads (adjust based on your ad network)
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Crawl-delay for slower servers if needed
+# Crawl-delay: 2
