@@ -35,6 +35,25 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- JSON-LD Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CompressCraft - Free Online File Compressor",
+    "url": "https://compresscraft.fun",
+    "description": "Free online tool to compress PDF, JPG, PNG and video files without losing quality. Reduce file sizes up to 90%.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "features": ["PDF Compression", "Image Compression", "Video Compression", "Free Tool"]
+  }
+  </script>
+
   <!-- CSS Variables -->
        <style>
        
@@ -306,8 +325,8 @@
             <!-- Header -->
             <header class="text-center mb-8">
                 <div class="flex justify-center items-center mb-4">
-                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-4 floating">
-                        <i class="fas fa-compress text-white text-2xl"></i>
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-4 floating" aria-label="CompressCraft Logo">
+                        <i class="fas fa-compress text-white text-2xl" aria-hidden="true"></i>
                     </div>
                     <h1 class="text-5xl md:text-6xl font-black glow">CompressCraft</h1>
                 </div>
@@ -327,7 +346,7 @@
                 <!-- Compression Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                     <div class="compressor-card rounded-xl p-6 text-center">
-                        <div class="w-16 h-16 rounded-full bg-indigo-900 flex items-center justify-center mx-auto mb-4">
+                        <div class="w-16 h-16 rounded-full bg-indigo-900 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                             <i class="fas fa-image text-indigo-400 text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2">Image Compressor</h3>
@@ -338,7 +357,7 @@
                     </div>
                     
                     <div class="compressor-card rounded-xl p-6 text-center">
-                        <div class="w-16 h-16 rounded-full bg-purple-900 flex items-center justify-center mx-auto mb-4">
+                        <div class="w-16 h-16 rounded-full bg-purple-900 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                             <i class="fas fa-video text-purple-400 text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2">Video Optimizer</h3>
@@ -349,7 +368,7 @@
                     </div>
                     
                     <div class="compressor-card rounded-xl p-6 text-center">
-                        <div class="w-16 h-16 rounded-full bg-pink-900 flex items-center justify-center mx-auto mb-4">
+                        <div class="w-16 h-16 rounded-full bg-pink-900 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                             <i class="fas fa-file-archive text-pink-400 text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2">Document Shrinker</h3>
@@ -363,11 +382,11 @@
                 <!-- Drop Zone -->
                 <div class="drop-zone rounded-2xl p-12 text-center mb-8" id="dropZone">
                     <div class="max-w-md mx-auto">
-                        <i class="fas fa-cloud-upload-alt text-6xl text-indigo-400 mb-6 pulse"></i>
+                        <i class="fas fa-cloud-upload-alt text-6xl text-indigo-400 mb-6 pulse" aria-hidden="true"></i>
                         <h3 class="text-2xl font-bold mb-2">Drop files here to compress</h3>
                         <p class="text-indigo-300 mb-6">or click to browse files</p>
-                        <button class="btn-primary text-white font-bold py-3 px-8 rounded-full" id="browseBtn">
-                            <i class="fas fa-folder-open mr-2"></i> Browse Files
+                        <button class="btn-primary text-white font-bold py-3 px-8 rounded-full" id="browseBtn" aria-label="Browse files to compress">
+                            <i class="fas fa-folder-open mr-2" aria-hidden="true"></i> Browse Files
                         </button>
                         <input type="file" id="fileInput" class="hidden" multiple>
                     </div>
@@ -376,7 +395,7 @@
                 <!-- Compression Settings -->
                 <div class="compressor-card rounded-xl p-6 mb-8">
                     <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-sliders-h mr-2 text-indigo-400"></i>
+                        <i class="fas fa-sliders-h mr-2 text-indigo-400" aria-hidden="true"></i>
                         Compression Settings
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -412,12 +431,12 @@
                 <!-- File List -->
                 <div class="compressor-card rounded-xl p-6 mb-8">
                     <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-file mr-2 text-indigo-400"></i>
+                        <i class="fas fa-file mr-2 text-indigo-400" aria-hidden="true"></i>
                         Files to Compress
                     </h3>
                     <div id="fileList" class="space-y-3">
                         <div class="text-center py-8 text-indigo-300">
-                            <i class="fas fa-inbox text-4xl mb-2"></i>
+                            <i class="fas fa-inbox text-4xl mb-2" aria-hidden="true"></i>
                             <p>No files added yet</p>
                         </div>
                     </div>
@@ -425,11 +444,11 @@
 
                 <!-- Compression Controls -->
                 <div class="flex flex-wrap justify-center gap-4 mb-12">
-                    <button id="compressBtn" class="btn-primary text-white font-bold py-3 px-8 rounded-full flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
-                        <i class="fas fa-magic mr-2"></i> Compress All Files
+                    <button id="compressBtn" class="btn-primary text-white font-bold py-3 px-8 rounded-full flex items-center disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Compress all files">
+                        <i class="fas fa-magic mr-2" aria-hidden="true"></i> Compress All Files
                     </button>
-                    <button id="clearBtn" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-full flex items-center">
-                        <i class="fas fa-trash-alt mr-2"></i> Clear All
+                    <button id="clearBtn" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-full flex items-center" aria-label="Clear all files">
+                        <i class="fas fa-trash-alt mr-2" aria-hidden="true"></i> Clear All
                     </button>
                 </div>
 
@@ -448,15 +467,33 @@
                         </div>
                         
                         <div class="blog-card">
+                            <h3>Best Free Image Compressor Online - Reduce Size Without Losing Quality</h3>
+                            <p>Discover the top free tools and techniques to compress images while maintaining visual quality for websites and social media.</p>
+                            <a href="/free-image-compressor-online" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        
+                        <div class="blog-card">
                             <h3>Compress Videos for WhatsApp: A Complete Guide</h3>
                             <p>Discover how to quickly reduce video file sizes while maintaining quality for easy sharing on WhatsApp and other messaging platforms.</p>
                             <a href="/compress-mp4-for-whatsapp" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
                         </div>
-                        
+
                         <div class="blog-card">
-                            <h3>Reduce Image Size Without Losing Quality</h3>
-                            <p>Find out the secrets to shrinking JPG and PNG files while preserving image clarity and detail for websites and social media.</p>
-                            <a href="/compress-jpg-without-losing-quality" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                            <h3>Free File Compressor Tool - Shrink JPG, PNG Online</h3>
+                            <p>Find the best free online tools to compress images and reduce file sizes without losing quality for websites and email attachments.</p>
+                            <a href="/free-file-compressor-tool" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+
+                        <div class="blog-card">
+                            <h3>Online Video Size Reducer - Compress Video for Social Media</h3>
+                            <p>Learn how to reduce video file sizes for Instagram, Facebook, Twitter and other social platforms while maintaining quality.</p>
+                            <a href="/online-video-size-reducer-free" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+
+                        <div class="blog-card">
+                            <h3>Best Free Compressor App/Browser Tools 2023</h3>
+                            <p>Compare the top free compression tools available as browser extensions and mobile apps for quick file size reduction.</p>
+                            <a href="/best-free-compressor-app-browser" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     
@@ -480,9 +517,9 @@
             <footer class="text-center py-8 border-t border-slate-800 mt-16">
                 <p class="text-indigo-400">© 2023 CompressCraft. All rights reserved.</p>
                 <div class="flex justify-center space-x-4 mt-4">
-                    <a href="#" class="text-indigo-400 hover:text-indigo-300"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-indigo-400 hover:text-indigo-300"><i class="fab fa-github"></i></a>
-                    <a href="#" class="text-indigo-400 hover:text-indigo-300"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="text-indigo-400 hover:text-indigo-300" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-indigo-400 hover:text-indigo-300" title="Check our GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-indigo-400 hover:text-indigo-300" title="Join our Discord"><i class="fab fa-discord"></i></a>
                 </div>
             </footer>
         </div>
@@ -492,8 +529,8 @@
     <div class="mobile-only mobile-container">
         <header class="text-center mb-8">
             <div class="flex justify-center items-center mb-3">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-3">
-                    <i class="fas fa-compress text-white text-xl"></i>
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-3" aria-label="CompressCraft Logo">
+                    <i class="fas fa-compress text-white text-xl" aria-hidden="true"></i>
                 </div>
                 <h1 class="text-3xl font-black">CompressCraft</h1>
             </div>
@@ -510,17 +547,17 @@
 
         <div class="mobile-card">
             <h3 class="text-lg font-bold mb-4 flex items-center">
-                <i class="fas fa-cloud-upload-alt mr-2 text-indigo-400"></i>
+                <i class="fas fa-cloud-upload-alt mr-2 text-indigo-400" aria-hidden="true"></i>
                 Upload Files
             </h3>
-            <button class="mobile-btn" id="mobileFileBtn">
-                <i class="fas fa-folder-open mr-2"></i> Select Files
+            <button class="mobile-btn" id="mobileFileBtn" aria-label="Select files to compress">
+                <i class="fas fa-folder-open mr-2" aria-hidden="true"></i> Select Files
             </button>
             <input type="file" id="mobileFileInput" class="hidden" multiple>
             
             <div class="mt-4">
                 <h3 class="text-lg font-bold mb-3 flex items-center">
-                    <i class="fas fa-sliders-h mr-2 text-indigo-400"></i>
+                    <i class="fas fa-sliders-h mr-2 text-indigo-400" aria-hidden="true"></i>
                     Settings
                 </h3>
                 <select class="w-full bg-slate-800 border border-indigo-500 rounded-lg py-2 px-3 mb-3 focus:outline-none" id="mobileCompressionLevel">
@@ -537,30 +574,30 @@
 
         <div class="mobile-card">
             <h3 class="text-lg font-bold mb-3 flex items-center">
-                <i class="fas fa-file mr-2 text-indigo-400"></i>
+                <i class="fas fa-file mr-2 text-indigo-400" aria-hidden="true"></i>
                 Selected Files
             </h3>
             <div id="mobileFileList" class="mobile-file-list">
                 <div class="text-center py-6 text-indigo-300">
-                    <i class="fas fa-inbox text-3xl mb-2"></i>
+                    <i class="fas fa-inbox text-3xl mb-2" aria-hidden="true"></i>
                     <p>No files selected</p>
                 </div>
             </div>
         </div>
 
         <div class="flex flex-col mt-4">
-            <button id="mobileCompressBtn" class="mobile-btn">
-                <i class="fas fa-magic mr-2"></i> Compress Files
+            <button id="mobileCompressBtn" class="mobile-btn" aria-label="Compress selected files">
+                <i class="fas fa-magic mr-2" aria-hidden="true"></i> Compress Files
             </button>
-            <button id="mobileClearBtn" class="bg-slate-800 text-white font-bold py-3 px-8 rounded-full">
-                <i class="fas fa-trash-alt mr-2"></i> Clear All
+            <button id="mobileClearBtn" class="bg-slate-800 text-white font-bold py-3 px-8 rounded-full" aria-label="Clear all files">
+                <i class="fas fa-trash-alt mr-2" aria-hidden="true"></i> Clear All
             </button>
         </div>
 
         <!-- Mobile Blog Section -->
         <div class="mobile-card mt-6">
             <h3 class="text-lg font-bold mb-4 flex items-center">
-                <i class="fas fa-book-open mr-2 text-indigo-400"></i>
+                <i class="fas fa-book-open mr-2 text-indigo-400" aria-hidden="true"></i>
                 Compression Guides
             </h3>
             
@@ -572,15 +609,15 @@
                 </div>
                 
                 <div>
-                    <h4 class="font-bold">WhatsApp Video Compression</h4>
-                    <p class="text-sm text-indigo-300 mb-2">Shrink videos for easy sharing on WhatsApp</p>
-                    <a href="/compress-mp4-for-whatsapp" class="text-sm text-accent">Read guide →</a>
+                    <h4 class="font-bold">Free Image Compressor Online</h4>
+                    <p class="text-sm text-indigo-300 mb-2">Shrink JPG, PNG files without quality loss</p>
+                    <a href="/free-image-compressor-online" class="text-sm text-accent">Read guide →</a>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold">Image Quality Preservation</h4>
-                    <p class="text-sm text-indigo-300 mb-2">Reduce image size without losing quality</p>
-                    <a href="/compress-jpg-without-losing-quality" class="text-sm text-accent">Read guide →</a>
+                    <h4 class="font-bold">WhatsApp Video Compression</h4>
+                    <p class="text-sm text-indigo-300 mb-2">Shrink videos for easy sharing on WhatsApp</p>
+                    <a href="/compress-mp4-for-whatsapp" class="text-sm text-accent">Read guide →</a>
                 </div>
             </div>
             
@@ -829,7 +866,7 @@
                                     <p class="text-sm text-indigo-300">${fileSize} MB</p>
                                 </div>
                             </div>
-                            <button class="text-pink-500 hover:text-pink-400" onclick="removeFile(${index})">
+                            <button class="text-pink-500 hover:text-pink-400" onclick="removeFile(${index})" aria-label="Remove file">
                                 <i class="fas fa-times-circle text-xl"></i>
                             </button>
                         `;
@@ -931,10 +968,10 @@
                             </div>
                             
                             <div class="flex justify-between">
-                                <button class="text-indigo-400 hover:text-indigo-300 flex items-center">
+                                <button class="text-indigo-400 hover:text-indigo-300 flex items-center" aria-label="Preview file">
                                     <i class="fas fa-eye mr-1"></i> Preview
                                 </button>
-                                <button class="download-btn btn-primary text-white font-bold py-2 px-4 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
+                                <button class="download-btn btn-primary text-white font-bold py-2 px-4 rounded-full text-sm" data-filename="${file.name}" data-index="${index}" aria-label="Download compressed file">
                                     <i class="fas fa-download mr-1"></i> Download
                                 </button>
                             </div>
@@ -1023,7 +1060,7 @@
                                     <p class="text-xs text-indigo-300">${fileSize} MB</p>
                                 </div>
                             </div>
-                            <button class="text-pink-500" onclick="removeMobileFile(${index})">
+                            <button class="text-pink-500" onclick="removeMobileFile(${index})" aria-label="Remove file">
                                 <i class="fas fa-times-circle"></i>
                             </button>
                         `;
@@ -1125,10 +1162,10 @@
                             </div>
                             
                             <div class="flex justify-between">
-                                <button class="text-indigo-400 text-sm flex items-center">
+                                <button class="text-indigo-400 text-sm flex items-center" aria-label="Preview file">
                                     <i class="fas fa-eye mr-1"></i> Preview
                                 </button>
-                                <button class="download-btn bg-indigo-600 text-white font-bold py-1 px-3 rounded-full text-sm" data-filename="${file.name}" data-index="${index}">
+                                <button class="download-btn bg-indigo-600 text-white font-bold py-1 px-3 rounded-full text-sm" data-filename="${file.name}" data-index="${index}" aria-label="Download compressed file">
                                     <i class="fas fa-download mr-1"></i> Download
                                 </button>
                             </div>
